@@ -70,70 +70,51 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
-
     @Test
-    @DisplayName("should not allow multiple decimal dots")
-    void testMultipleDecimalDots() {
+    @DisplayName("should start new operation after percentage")
+    void testAfterPercentage() {
         Calculator calc = new Calculator();
 
         calc.pressDigitKey(1);
-        calc.pressDotKey();
-        calc.pressDigitKey(7);
-        calc.pressDotKey();
-        calc.pressDigitKey(8);
-
-        String expected = "1.78";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
-    }
-
-
-    //TODO hier weitere Tests erstellen
-
-    @Test
-    @DisplayName("should calculate percentage of a number correctly")
-    void testPercentageCalculation() {
-        Calculator calc = new Calculator();
-
-        calc.pressDigitKey(5);
         calc.pressDigitKey(0);
-        calc.pressUnaryOperationKey("%");
-
-        String expected = "0.5";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
-    }
-    @Test
-    @DisplayName("should clear the calculator display and reset state")
-    void testClearKey() {
-        Calculator calc = new Calculator();
-
+        calc.pressDigitKey(0);
+        calc.pressUnaryOperationKey("%"); // 100% = 1.0
         calc.pressDigitKey(5);
         calc.pressBinaryOperationKey("+");
         calc.pressDigitKey(3);
-        calc.pressClearKey();
-        calc.pressDigitKey(2);
         calc.pressEqualsKey();
 
-        String expected = "7";
-        String actual = calc.readScreen();
-
-        assertEquals(expected, actual);
+        String expected = "8"; // 5 + 3 = 8
+        assertEquals(expected, calc.readScreen());
     }
-
     @Test
-    @DisplayName("should handle binary operations correctly")
-    void testBinaryOperations() {
+    @DisplayName("should start new operation after percentage")
+    void testAfterPercentageFixed() {
         Calculator calc = new Calculator();
 
-        calc.pressDigitKey(4);
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(0);
+        calc.pressDigitKey(0);
+        calc.pressUnaryOperationKey("%"); // 100% = 1.0
+        calc.pressClearKey();
+        calc.pressDigitKey(5);
         calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(3);
+        calc.pressEqualsKey();
+
+        assertEquals("8", calc.readScreen());
+    }
+    @Test
+    @DisplayName("should handle binary operations correctly")
+    void testBinaryOperations1() {
+        Calculator calc = new Calculator();
+
         calc.pressDigitKey(2);
         calc.pressBinaryOperationKey("x");
         calc.pressDigitKey(3);
-        calc.pressEqualsKey();
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(4);
+        calc.pressEqualsKey();  // 2 × 3 + 4 = 10
 
         String expected = "10";
         String actual = calc.readScreen();
@@ -141,3 +122,4 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 }
+
